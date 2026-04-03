@@ -27,9 +27,13 @@ const FAQSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 bg-gradient-section relative">
+    <section ref={ref} className="py-24 md:py-32 bg-gradient-section relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      <div className="container mx-auto px-6 max-w-3xl">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-diagonal-pattern opacity-30" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-primary/5 blur-[120px]" style={{ animation: 'drift 18s ease-in-out infinite' }} />
+      <div className="absolute top-20 left-20 w-[250px] h-[250px] rounded-full bg-accent/4 blur-[90px]" style={{ animation: 'float-orb 15s ease-in-out infinite' }} />
+      <div className="container mx-auto px-6 max-w-3xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}

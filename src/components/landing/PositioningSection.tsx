@@ -15,8 +15,13 @@ const PositioningSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 relative">
-      <div className="container mx-auto px-6 max-w-5xl">
+    <section ref={ref} className="py-24 md:py-32 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-primary/10" style={{ animation: 'pulse-ring 8s ease-in-out infinite' }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-primary/5" style={{ animation: 'pulse-ring 8s ease-in-out infinite 2s' }} />
+      <div className="absolute top-10 right-10 w-[250px] h-[250px] rounded-full bg-primary/8 blur-[100px]" style={{ animation: 'drift 20s ease-in-out infinite' }} />
+      <div className="container mx-auto px-6 max-w-5xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}

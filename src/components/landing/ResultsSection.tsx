@@ -16,9 +16,13 @@ const ResultsSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 bg-gradient-section relative">
+    <section ref={ref} className="py-24 md:py-32 bg-gradient-section relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      <div className="container mx-auto px-6 max-w-5xl">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-25" />
+      <div className="absolute -bottom-20 left-1/3 w-[500px] h-[300px] rounded-full bg-primary/8 blur-[130px]" style={{ animation: 'float-orb 22s ease-in-out infinite' }} />
+      <div className="absolute top-20 right-10 w-[200px] h-[200px] rounded-full border border-primary/10 opacity-30" style={{ animation: 'spin-slow 30s linear infinite' }} />
+      <div className="container mx-auto px-6 max-w-5xl relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}

@@ -8,8 +8,12 @@ const OfferSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 relative">
-      <div className="container mx-auto px-6 max-w-3xl">
+    <section ref={ref} className="py-24 md:py-32 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-dot-pattern opacity-25" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-primary/6 blur-[150px]" style={{ animation: 'pulse-ring 10s ease-in-out infinite' }} />
+      <div className="absolute top-10 left-10 w-[200px] h-[200px] rounded-full bg-primary/4 blur-[80px]" style={{ animation: 'float-orb 18s ease-in-out infinite' }} />
+      <div className="container mx-auto px-6 max-w-3xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}

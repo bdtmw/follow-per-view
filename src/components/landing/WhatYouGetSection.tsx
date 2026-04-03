@@ -15,8 +15,12 @@ const WhatYouGetSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 relative">
-      <div className="container mx-auto px-6 max-w-3xl">
+    <section ref={ref} className="py-24 md:py-32 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-dot-pattern opacity-30" />
+      <div className="absolute -top-10 left-1/4 w-[400px] h-[400px] rounded-full bg-primary/6 blur-[130px]" style={{ animation: 'float-orb 16s ease-in-out infinite' }} />
+      <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] rounded-full bg-accent/5 blur-[80px]" style={{ animation: 'drift 12s ease-in-out infinite' }} />
+      <div className="container mx-auto px-6 max-w-3xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}

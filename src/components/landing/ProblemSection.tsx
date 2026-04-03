@@ -15,8 +15,12 @@ const ProblemSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 bg-gradient-section relative">
+    <section ref={ref} className="py-24 md:py-32 bg-gradient-section relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-dot-pattern opacity-40" />
+      <div className="absolute -top-20 -right-20 w-[400px] h-[400px] rounded-full bg-destructive/5 blur-[100px]" style={{ animation: 'float-orb 12s ease-in-out infinite' }} />
+      <div className="absolute -bottom-20 -left-20 w-[300px] h-[300px] rounded-full bg-primary/5 blur-[80px]" style={{ animation: 'float-orb 15s ease-in-out infinite reverse' }} />
       <div className="container mx-auto px-6 max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
