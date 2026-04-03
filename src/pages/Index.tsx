@@ -9,6 +9,7 @@ import UseCasesSection from "@/components/landing/UseCasesSection";
 import ResultsSection from "@/components/landing/ResultsSection";
 import OfferSection from "@/components/landing/OfferSection";
 import FAQSection from "@/components/landing/FAQSection";
+import BookingFormSection from "@/components/landing/BookingFormSection";
 import FinalCTASection from "@/components/landing/FinalCTASection";
 import Footer from "@/components/landing/Footer";
 
@@ -26,6 +27,7 @@ const Index = () => {
       <ResultsSection />
       <OfferSection />
       <FAQSection />
+      <BookingFormSection />
       <FinalCTASection />
       <Footer />
     </div>

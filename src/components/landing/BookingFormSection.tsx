@@ -1,0 +1,144 @@
+import { motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Send, CheckCircle } from "lucide-react";
+
+const BookingFormSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    business: "",
+    message: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
+  return (
+    <section id="booking-form" ref={ref} className="py-24 md:py-32 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-primary/8 blur-[150px]" style={{ animation: 'pulse-ring 8s ease-in-out infinite' }} />
+      <div className="absolute top-10 right-20 w-[250px] h-[250px] rounded-full bg-primary/5 blur-[100px]" style={{ animation: 'float-orb 16s ease-in-out infinite' }} />
+
+      <div className="container mx-auto px-6 max-w-5xl relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left - copy */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6">
+              Ready to Turn Views Into{" "}
+              <span className="gradient-text-orange">Revenue?</span>
+            </h2>
+            <p className="text-muted-foreground text-lg leading-relaxed mb-8">
+              Fill out the form and our team will reach out within 24 hours to schedule your personalized demo.
+            </p>
+            <div className="space-y-4">
+              {[
+                "Free strategy consultation",
+                "Custom campaign proposal",
+                "No obligation, no pressure",
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-3 text-foreground">
+                  <span className="text-primary">✔</span>
+                  <span className="font-medium">{item}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right - form */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            {submitted ? (
+              <div className="glass-card rounded-2xl p-10 border-primary/20 text-center">
+                <div className="w-16 h-16 rounded-full bg-primary/15 flex items-center justify-center mx-auto mb-5">
+                  <CheckCircle className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-3">We Got Your Request!</h3>
+                <p className="text-muted-foreground">Our team will reach out within 24 hours to schedule your demo.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-8 md:p-10 border-primary/20 space-y-5">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/80 to-primary rounded-t-2xl" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm text-muted-foreground mb-1.5 block">Full Name *</label>
+                    <Input
+                      required
+                      placeholder="John Smith"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="bg-secondary/50 border-border/50 focus:border-primary/50 h-12"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-muted-foreground mb-1.5 block">Email *</label>
+                    <Input
+                      required
+                      type="email"
+                      placeholder="john@business.com"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="bg-secondary/50 border-border/50 focus:border-primary/50 h-12"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm text-muted-foreground mb-1.5 block">Phone</label>
+                    <Input
+                      placeholder="(555) 123-4567"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="bg-secondary/50 border-border/50 focus:border-primary/50 h-12"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-muted-foreground mb-1.5 block">Business Name</label>
+                    <Input
+                      placeholder="Your Business"
+                      value={formData.business}
+                      onChange={(e) => setFormData({ ...formData, business: e.target.value })}
+                      className="bg-secondary/50 border-border/50 focus:border-primary/50 h-12"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm text-muted-foreground mb-1.5 block">Tell us about your goals</label>
+                  <Textarea
+                    placeholder="What are you looking to achieve with video marketing?"
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="bg-secondary/50 border-border/50 focus:border-primary/50 min-h-[100px] resize-none"
+                  />
+                </div>
+                <Button variant="hero" size="xl" className="w-full" type="submit">
+                  <Send className="w-4 h-4" />
+                  Book My Demo
+                </Button>
+                <p className="text-xs text-muted-foreground text-center">No spam. No obligation. Just a conversation.</p>
+              </form>
+            )}
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default BookingFormSection;
