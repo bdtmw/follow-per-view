@@ -3,22 +3,47 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const BookingFormSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    business: "",
+    business_name: "",
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    
+    const { error } = await supabase.from("leads").insert({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone || null,
+      business_name: formData.business_name || null,
+      message: formData.message || null,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again or contact us directly.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setSubmitted(true);
   };
 
@@ -73,7 +98,7 @@ const BookingFormSection = () => {
                 <p className="text-muted-foreground">Our team will reach out within 24 hours to schedule your demo.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-8 md:p-10 border-primary/20 space-y-5">
+              <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-8 md:p-10 border-primary/20 space-y-5 relative">
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/80 to-primary rounded-t-2xl" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -112,8 +137,8 @@ const BookingFormSection = () => {
                     <label className="text-sm text-muted-foreground mb-1.5 block">Business Name</label>
                     <Input
                       placeholder="Your Business"
-                      value={formData.business}
-                      onChange={(e) => setFormData({ ...formData, business: e.target.value })}
+                      value={formData.business_name}
+                      onChange={(e) => setFormData({ ...formData, business_name: e.target.value })}
                       className="bg-secondary/50 border-border/50 focus:border-primary/50 h-12"
                     />
                   </div>
@@ -127,9 +152,9 @@ const BookingFormSection = () => {
                     className="bg-secondary/50 border-border/50 focus:border-primary/50 min-h-[100px] resize-none"
                   />
                 </div>
-                <Button variant="hero" size="xl" className="w-full" type="submit">
-                  <Send className="w-4 h-4" />
-                  Book My Demo
+                <Button variant="hero" size="xl" className="w-full" type="submit" disabled={loading}>
+                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                  {loading ? "Submitting..." : "Book My Demo"}
                 </Button>
                 <p className="text-xs text-muted-foreground text-center">No spam. No obligation. Just a conversation.</p>
               </form>
