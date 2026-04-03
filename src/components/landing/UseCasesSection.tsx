@@ -13,8 +13,14 @@ const UseCasesSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 relative">
-      <div className="container mx-auto px-6 max-w-5xl">
+    <section ref={ref} className="py-24 md:py-32 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-diagonal-pattern opacity-40" />
+      <div className="absolute top-0 right-1/4 w-[500px] h-[300px] rounded-full bg-primary/5 blur-[120px]" style={{ animation: 'float-orb 14s ease-in-out infinite' }} />
+      <div className="absolute bottom-20 left-10 w-2 h-2 rounded-full bg-primary/30" style={{ animation: 'drift 8s ease-in-out infinite' }} />
+      <div className="absolute top-20 right-10 w-1.5 h-1.5 rounded-full bg-primary/20" style={{ animation: 'drift 10s ease-in-out infinite 3s' }} />
+      <div className="absolute bottom-40 right-40 w-1 h-1 rounded-full bg-primary/25" style={{ animation: 'drift 6s ease-in-out infinite 1s' }} />
+      <div className="container mx-auto px-6 max-w-5xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}

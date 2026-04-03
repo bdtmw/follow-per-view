@@ -15,9 +15,13 @@ const HowItWorksSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 bg-gradient-section relative">
+    <section ref={ref} className="py-24 md:py-32 bg-gradient-section relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      <div className="container mx-auto px-6 max-w-5xl">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-diagonal-pattern" />
+      <div className="absolute top-20 left-10 w-[350px] h-[350px] rounded-full bg-primary/6 blur-[120px]" style={{ animation: 'float-orb 18s ease-in-out infinite' }} />
+      <div className="absolute bottom-10 right-20 w-[300px] h-[300px] rounded-full bg-primary/4 blur-[100px]" style={{ animation: 'drift 14s ease-in-out infinite' }} />
+      <div className="container mx-auto px-6 max-w-5xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
