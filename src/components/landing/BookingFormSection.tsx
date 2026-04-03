@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Send, CheckCircle, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 const BookingFormSection = () => {
@@ -13,6 +12,7 @@ const BookingFormSection = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,39 +24,62 @@ const BookingFormSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
-    const { error } = await supabase.from("leads").insert({
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone || null,
-      business_name: formData.business_name || null,
-      message: formData.message || null,
-    });
 
-    setLoading(false);
+    try {
+      const response = await fetch(
+        "https://services.leadconnectorhq.com/hooks/suAZp50xNC77tiayOgih/webhook-trigger/0880fc67-0599-49c2-a966-f383713ceaab",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            business_name: formData.business_name,
+            message: formData.message,
+          }),
+        }
+      );
 
-    if (error) {
+      setLoading(false);
+
+      if (!response.ok) {
+        toast({
+          title: "Something went wrong",
+          description: "Please try again or contact us directly.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      setLoading(false);
+      console.error("Webhook error:", error);
       toast({
         title: "Something went wrong",
         description: "Please try again or contact us directly.",
         variant: "destructive",
       });
-      return;
     }
-
-    setSubmitted(true);
   };
 
   return (
     <section id="booking-form" ref={ref} className="py-24 md:py-32 relative overflow-hidden">
-      {/* Animated background */}
       <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-primary/8 blur-[150px]" style={{ animation: 'pulse-ring 8s ease-in-out infinite' }} />
-      <div className="absolute top-10 right-20 w-[250px] h-[250px] rounded-full bg-primary/5 blur-[100px]" style={{ animation: 'float-orb 16s ease-in-out infinite' }} />
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-primary/8 blur-[150px]"
+        style={{ animation: "pulse-ring 8s ease-in-out infinite" }}
+      />
+      <div
+        className="absolute top-10 right-20 w-[250px] h-[250px] rounded-full bg-primary/5 blur-[100px]"
+        style={{ animation: "float-orb 16s ease-in-out infinite" }}
+      />
 
       <div className="container mx-auto px-6 max-w-5xl relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left - copy */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -83,7 +106,6 @@ const BookingFormSection = () => {
             </div>
           </motion.div>
 
-          {/* Right - form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -95,11 +117,14 @@ const BookingFormSection = () => {
                   <CheckCircle className="w-8 h-8 text-primary" />
                 </div>
                 <h3 className="text-2xl font-bold text-foreground mb-3">We Got Your Request!</h3>
-                <p className="text-muted-foreground">Our team will reach out within 24 hours to schedule your demo.</p>
+                <p className="text-muted-foreground">
+                  Our team will reach out within 24 hours to schedule your demo.
+                </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-8 md:p-10 border-primary/20 space-y-5 relative">
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/80 to-primary rounded-t-2xl" />
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm text-muted-foreground mb-1.5 block">Full Name *</label>
@@ -123,6 +148,7 @@ const BookingFormSection = () => {
                     />
                   </div>
                 </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm text-muted-foreground mb-1.5 block">Phone</label>
@@ -143,6 +169,7 @@ const BookingFormSection = () => {
                     />
                   </div>
                 </div>
+
                 <div>
                   <label className="text-sm text-muted-foreground mb-1.5 block">Tell us about your goals</label>
                   <Textarea
@@ -152,11 +179,15 @@ const BookingFormSection = () => {
                     className="bg-secondary/50 border-border/50 focus:border-primary/50 min-h-[100px] resize-none"
                   />
                 </div>
+
                 <Button variant="hero" size="xl" className="w-full" type="submit" disabled={loading}>
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                   {loading ? "Submitting..." : "Book My Demo"}
                 </Button>
-                <p className="text-xs text-muted-foreground text-center">No spam. No obligation. Just a conversation.</p>
+
+                <p className="text-xs text-muted-foreground text-center">
+                  No spam. No obligation. Just a conversation.
+                </p>
               </form>
             )}
           </motion.div>

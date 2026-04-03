@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -20,10 +21,10 @@ const Navbar = () => {
         scrolled ? "glass-card border-b border-border/50" : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-        <div className="text-xl font-bold">
-          <span className="gradient-text-orange">Follow</span>PerView
-        </div>
+      <div className="container mx-auto px-6 h-16 flex items-center justify-between mt-3">
+        <a href="#" className="flex items-center ">
+  <img src={logo} alt="FollowPerClick logo" className="h-16 w-auto" />
+</a>
         <Button variant="hero" size="sm" onClick={() => document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' })}>
           Book a Demo
         </Button>
