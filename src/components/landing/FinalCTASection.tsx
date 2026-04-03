@@ -30,7 +30,7 @@ const FinalCTASection = () => {
           <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed">
             Turn video views into predictable leads and revenue with a system built to follow every viewer.
           </p>
-          <Button variant="hero" size="xl">
+          <Button variant="hero" size="xl" onClick={() => document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' })}>
             Book a Demo
           </Button>
         </motion.div>

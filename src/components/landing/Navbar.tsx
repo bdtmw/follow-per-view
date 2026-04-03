@@ -24,7 +24,7 @@ const Navbar = () => {
         <div className="text-xl font-bold">
           <span className="gradient-text-orange">Follow</span>PerView
         </div>
-        <Button variant="hero" size="sm">
+        <Button variant="hero" size="sm" onClick={() => document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' })}>
           Book a Demo
         </Button>
       </div>

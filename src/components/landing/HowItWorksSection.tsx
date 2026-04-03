@@ -60,7 +60,7 @@ const HowItWorksSection = () => {
           transition={{ delay: 0.8 }}
           className="text-center mt-12"
         >
-          <Button variant="hero" size="xl">Book a Demo</Button>
+          <Button variant="hero" size="xl" onClick={() => document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' })}>Book a Demo</Button>
         </motion.div>
       </div>
     </section>

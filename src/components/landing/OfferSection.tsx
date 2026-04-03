@@ -56,7 +56,7 @@ const OfferSection = () => {
             ))}
           </div>
 
-          <Button variant="hero" size="xl" className="w-full">
+          <Button variant="hero" size="xl" className="w-full" onClick={() => document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' })}>
             Book a Demo
           </Button>
         </motion.div>
