@@ -15,7 +15,7 @@ const HowItWorksSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 bg-gradient-section relative overflow-hidden">
+    <section id="how-it-works" ref={ref} className="py-24 md:py-32 bg-gradient-section relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       {/* Animated background */}
       <div className="absolute inset-0 bg-diagonal-pattern" />
@@ -60,7 +60,7 @@ const HowItWorksSection = () => {
           transition={{ delay: 0.8 }}
           className="text-center mt-12"
         >
-          <Button variant="hero" size="xl">Book a Demo</Button>
+          <Button variant="hero" size="xl" onClick={() => document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' })}>Book a Demo</Button>
         </motion.div>
       </div>
     </section>
